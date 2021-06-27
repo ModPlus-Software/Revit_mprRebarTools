@@ -12,7 +12,13 @@
         /// <inheritdoc/>
         public bool AllowElement(Element elem)
         {
-            return elem is Rebar rebar && rebar.Quantity > 1 && rebar.IsRebarShapeDriven();
+            return elem is Rebar rebar &&
+#if R2017
+                   rebar.LayoutRule != RebarLayoutRule.Single;
+#else
+                   rebar.LayoutRule != RebarLayoutRule.Single &&
+                   rebar.IsRebarShapeDriven();
+#endif
         }
 
         /// <inheritdoc/>

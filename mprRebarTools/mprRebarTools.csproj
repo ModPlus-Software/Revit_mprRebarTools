@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
    <PropertyGroup>
-    <Version>0.0.0.1</Version>
+    <Version>1.0.0.0</Version>
     <RootNamespace>mprRebarTools</RootNamespace>
     <AssemblyName>$(RootNamespace)</AssemblyName>
   </PropertyGroup>
@@ -51,7 +51,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <Configurations>Debug</Configurations>
+    <Configurations>R2017;Debug</Configurations>
     <DefineConstants>Debug;R$(Description)</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -70,37 +70,37 @@
     <When Condition="'$(Configuration)'=='R2017'">
       <ItemGroup>
         <PackageReference Include="ModPlus.Revit.API.2017" Version="1.0.0" ExcludeAssets="runtime" />
-        <PackageReference Include="ModPlus.Revit.Module.2017" Version="7.2.0" ExcludeAssets="runtime" />
+        <PackageReference Include="ModPlus.Revit.Module.2017" Version="7.3.1" ExcludeAssets="runtime" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)'=='R2018'">
       <ItemGroup>
         <PackageReference Include="ModPlus.Revit.API.2018" Version="1.0.0" ExcludeAssets="runtime" />
-        <PackageReference Include="ModPlus.Revit.Module.2018" Version="7.2.0" ExcludeAssets="runtime" />
+        <PackageReference Include="ModPlus.Revit.Module.2018" Version="7.3.1" ExcludeAssets="runtime" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)'=='R2019'">
       <ItemGroup>
         <PackageReference Include="ModPlus.Revit.API.2019" Version="2.0.1" ExcludeAssets="runtime" />
-        <PackageReference Include="ModPlus.Revit.Module.2019" Version="7.2.0" ExcludeAssets="runtime" />
+        <PackageReference Include="ModPlus.Revit.Module.2019" Version="7.3.1" ExcludeAssets="runtime" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)'=='R2020'">
       <ItemGroup>
         <PackageReference Include="ModPlus.Revit.API.2020" Version="2.0.0" ExcludeAssets="runtime" />
-        <PackageReference Include="ModPlus.Revit.Module.2020" Version="7.2.0" ExcludeAssets="runtime" />
+        <PackageReference Include="ModPlus.Revit.Module.2020" Version="7.3.1" ExcludeAssets="runtime" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)'=='R2021'">
       <ItemGroup>
         <PackageReference Include="ModPlus.Revit.API.2021" Version="2.0.0" ExcludeAssets="runtime" />
-        <PackageReference Include="ModPlus.Revit.Module.2021" Version="7.2.0" ExcludeAssets="runtime" />
+        <PackageReference Include="ModPlus.Revit.Module.2021" Version="7.3.1" ExcludeAssets="runtime" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)'=='R2022' or '$(Configuration)'=='Debug'">
       <ItemGroup>
         <PackageReference Include="ModPlus.Revit.API.2022" Version="2.0.0" ExcludeAssets="runtime" />
-        <PackageReference Include="ModPlus.Revit.Module.2022" Version="7.2.0" ExcludeAssets="runtime" />
+        <PackageReference Include="ModPlus.Revit.Module.2022" Version="7.3.1" ExcludeAssets="runtime" />
       </ItemGroup>
     </When>
   </Choose>
@@ -113,6 +113,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\CopyRebarBetweenHosts_32x32.png" />
+    <Resource Include="Resources\ExplodeRebarSet_32x32.png" />
+    <Resource Include="Resources\mprRebarTools_16x16.png" />
+    <Resource Include="Resources\mprRebarTools_32x32.png" />
+    <Resource Include="Resources\RemoveRebarFromHost_32x32.png" />
+    <Resource Include="Resources\SplitRebarSet_32x32.png" />
   </ItemGroup>
   
 </Project>

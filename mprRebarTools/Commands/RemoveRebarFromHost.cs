@@ -5,9 +5,9 @@
     using System.Linq;
     using Autodesk.Revit.Attributes;
     using Autodesk.Revit.DB;
-    using Autodesk.Revit.DB.Structure;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Selection;
+    using ModPlusAPI;
     using SelectionFilters;
 
     /// <summary>
@@ -15,6 +15,7 @@
     /// </summary>
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]
+    //// ReSharper disable once UnusedMember.Global
     public class RemoveRebarFromHost : IExternalCommand
     {
         /// <inheritdoc/>
@@ -24,8 +25,9 @@
             {
                 var doc = commandData.Application.ActiveUIDocument.Document;
                 
+                // "Выберите элементы-основы"
                 var hosts = commandData.Application.ActiveUIDocument.Selection.PickObjects(
-                        ObjectType.Element, new HostSelectionFilter(), "Pick host objects")
+                        ObjectType.Element, new HostSelectionFilter(), Language.GetItem("m1"))
                     .Select(r => doc.GetElement(r))
                     .ToList();
 
@@ -36,23 +38,19 @@
 
                 foreach (var hostObject in hosts)
                 {
-                    var rebarHostData = RebarHostData.GetRebarHostData(hostObject);
-                    idsToDelete.AddRange(rebarHostData.GetAreaReinforcementsInHost().Select(r => r.Id));
-                    idsToDelete.AddRange(rebarHostData.GetPathReinforcementsInHost().Select(r => r.Id));
-                    idsToDelete.AddRange(rebarHostData.GetRebarContainersInHost().Select(r => r.Id));
-                    idsToDelete.AddRange(rebarHostData.GetRebarsInHost().Select(r => r.Id));
+                    idsToDelete.AddRange(Utils.GetReinforcement(hostObject).Select(e => e.Id));
                 }
 
-                if (idsToDelete.Any())
+                if (!idsToDelete.Any())
+                    return;
+                
+                using (var tr = new Transaction(doc, Language.GetItem("n1")))
                 {
-                    using (var tr = new Transaction(doc, "Remove rebar from host"))
-                    {
-                        tr.Start();
+                    tr.Start();
 
-                        doc.Delete(idsToDelete);
+                    doc.Delete(idsToDelete);
                         
-                        tr.Commit();
-                    }
+                    tr.Commit();
                 }
             });
         }

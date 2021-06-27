@@ -7,6 +7,8 @@
     using Autodesk.Revit.DB.Structure;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Selection;
+    using ModPlus_Revit.Utils;
+    using ModPlusAPI;
     using SelectionFilters;
 
     /// <summary>
@@ -14,6 +16,7 @@
     /// </summary>
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]
+    //// ReSharper disable once UnusedMember.Global
     public class ExplodeRebarSet : IExternalCommand
     {
         /// <inheritdoc />
@@ -23,8 +26,9 @@
             {
                 var doc = commandData.Application.ActiveUIDocument.Document;
 
+                // "Выберите арматурные наборы"
                 var rebarSets = commandData.Application.ActiveUIDocument.Selection
-                    .PickObjects(ObjectType.Element, new RebarSetSelectionFilter(), "Pick rebar sets")
+                    .PickObjects(ObjectType.Element, new RebarSetSelectionFilter(), Language.GetItem("m4"))
                     .Select(r => doc.GetElement(r))
                     .Cast<Rebar>()
                     .ToList();
@@ -32,7 +36,7 @@
                 if (!rebarSets.Any())
                     throw new OperationCanceledException();
 
-                using (var trGroup = new TransactionGroup(doc, "Explode rebar sets"))
+                using (var trGroup = new TransactionGroup(doc, Language.GetItem("n3")))
                 {
                     trGroup.Start();
 
@@ -51,9 +55,15 @@
             using (var tr = new Transaction(rebar.Document, "Explode rebar set"))
             {
                 tr.Start();
-
-                var step = rebar.MaxSpacing;
+                
+#if R2017
+                var distributionPath = rebar.GetDistributionPath();
+#else
                 var distributionPath = rebar.GetShapeDrivenAccessor().GetDistributionPath();
+#endif
+                var arrayLength = distributionPath.Length;
+                var realStep = arrayLength / (rebar.NumberOfBarPositions - 1);
+                
                 var rebarConstraintsManager = rebar.GetRebarConstraintsManager();
                 var sourceRebarConstraints = rebarConstraintsManager
                     .GetAllConstrainedHandles()
@@ -68,26 +78,23 @@
                         continue;
                     if (!rebar.IncludeLastBar && i == rebar.NumberOfBarPositions - 1)
                         continue;
-#if R2022
+
+#if !R2017 && !R2018 && !R2019 && !R2020 && !R2021
                     if (!rebar.DoesBarExistAtPosition(i))
                         continue;
 #endif
-                    var translation = distributionPath.Direction * step * i;
+                    var translation = distributionPath.Direction * realStep * i;
 
                     if (ElementTransformUtils.CopyElement(
                                 rebar.Document, rebar.Id, translation).FirstOrDefault() is ElementId newRebarId &&
                         rebar.Document.GetElement(newRebarId) is Rebar newRebar)
                     {
-#if R2017
                         newRebar.SetLayoutAsSingle();
-#else
-                        newRebar.GetShapeDrivenAccessor().SetLayoutAsSingle();
-#endif
 
                         if (rebar.DistributionType == DistributionType.VaryingLength)
                         {
                             var newRebarConstraintsManager = newRebar.GetRebarConstraintsManager();
-                            
+
                             var index = -1;
                             foreach (var rebarConstrainedHandle in newRebarConstraintsManager.GetAllConstrainedHandles())
                             {
@@ -96,7 +103,7 @@
                                     continue;
 
                                 index++;
-                                
+
                                 var sourceRebarConstraint = sourceRebarConstraints[index];
                                 newRebarConstraintsManager.SetPreferredConstraintForHandle(rebarConstrainedHandle, sourceRebarConstraint);
                             }

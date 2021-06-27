@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Windows.Media.Imaging;
     using Autodesk.Revit.UI;
     using ModPlusAPI;
     using ModPlusAPI.Windows;
@@ -17,10 +18,6 @@
             {
                 // create ribbon tab
                 CreateRibbonTab(application);
-
-                ////ModPlus_Revit.App.RibbonBuilder.HideTextOfSmallButtons(
-                ////    "ModPlus",
-                ////    new List<string> { "Grids mode", "Grids bubbles", "Rebars outside host", "Pick Annotations" });
 
                 return Result.Succeeded;
             }
@@ -49,8 +46,42 @@
             
             // interface of current ModPlus function
             var intF = new ModPlusConnector();
-            var assembly = Assembly.GetExecutingAssembly().Location;
             var contextualHelp = new ContextualHelp(ContextualHelpType.Url, ModPlus_Revit.App.RibbonBuilder.GetHelpUrl(intF.Name));
+            
+            var splitButtonData = new SplitButtonData(
+                "RemoveRebarFromHost",
+                "Remove rebar from host");
+
+            var firstButton = GetButton("RemoveRebarFromHost", Language.GetItem("n1"), Language.GetItem("d1"));
+            firstButton.SetContextualHelp(contextualHelp);
+            var help = firstButton.GetContextualHelp();
+            var sb = (SplitButton)panel.AddItem(splitButtonData);
+            sb.AddPushButton(firstButton);
+            sb.SetContextualHelp(help);
+            
+            foreach (var t in new List<Tuple<string, string, string>>
+            {
+                new Tuple<string, string, string>("CopyRebarBetweenHosts", Language.GetItem("n2"), Language.GetItem("d2")),
+                new Tuple<string, string, string>("ExplodeRebarSet", Language.GetItem("n3"), Language.GetItem("d3")),
+                new Tuple<string, string, string>("SplitRebarSet", Language.GetItem("n4"), Language.GetItem("d4")),
+            })
+            {
+                sb.AddPushButton(GetButton(t.Item1, t.Item2, t.Item3));
+            }
+        }
+
+        private PushButtonData GetButton(string name, string lName, string description)
+        {
+            return new PushButtonData(
+                name,
+                ModPlus_Revit.App.RibbonBuilder.ConvertLName(lName),
+                Assembly.GetExecutingAssembly().Location,
+                $"mprRebarTools.Commands.{name}")
+            {
+                ToolTip = description,
+                LargeImage = new BitmapImage(new Uri(
+                    $"pack://application:,,,/mprRebarTools_{ModPlusConnector.Instance.AvailProductExternalVersion};component/Resources/{name}_32x32.png"))
+            };
         }
     }
 }
