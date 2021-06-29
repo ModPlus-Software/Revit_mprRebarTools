@@ -23,6 +23,9 @@
         {
             return CommandExecutor.Execute(() =>
             {
+#if !DEBUG
+                ModPlusAPI.Statistic.SendCommandStarting($"mpr{nameof(RemoveRebarFromHost)}", ModPlusConnector.Instance.AvailProductExternalVersion);
+#endif
                 var doc = commandData.Application.ActiveUIDocument.Document;
                 
                 // "Выберите элементы-основы"

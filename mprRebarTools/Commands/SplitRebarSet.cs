@@ -26,6 +26,9 @@
         {
             return CommandExecutor.Execute(() =>
             {
+#if !DEBUG
+                ModPlusAPI.Statistic.SendCommandStarting($"mpr{nameof(SplitRebarSet)}", ModPlusConnector.Instance.AvailProductExternalVersion);
+#endif
                 var doc = commandData.Application.ActiveUIDocument.Document;
 
                 // "Выберите арматурный набор"

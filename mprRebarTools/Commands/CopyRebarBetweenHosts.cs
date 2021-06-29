@@ -25,6 +25,9 @@
         {
             return CommandExecutor.Execute(() =>
             {
+#if !DEBUG
+                ModPlusAPI.Statistic.SendCommandStarting($"mpr{nameof(CopyRebarBetweenHosts)}", ModPlusConnector.Instance.AvailProductExternalVersion);
+#endif
                 var doc = commandData.Application.ActiveUIDocument.Document;
 
                 // "Выберите исходный элемент-основу"
@@ -77,20 +80,20 @@
                                         // элементам по объему. Копируемая арматура расположится некорректно! Выберите
                                         // дальнейшее действие:"
                                         MainInstruction = Language.GetItem("h2"),
-                                        
+
                                         // "Применить выбранное действие к последующим случаям"
                                         ExtraCheckBoxText = Language.GetItem("h3")
                                     };
-                                    
+
                                     // "Пропустить копирование"
                                     dialog.AddCommandLink(TaskDialogCommandLinkId.CommandLink1, Language.GetItem("h4"));
-                                    
+
                                     // "Выполнить копирование"
                                     dialog.AddCommandLink(TaskDialogCommandLinkId.CommandLink2, Language.GetItem("h5"));
-                                    
+
                                     // "Отмена"
                                     dialog.AddCommandLink(TaskDialogCommandLinkId.CommandLink3, Language.GetItem("h6"));
-                                    
+
                                     var result = dialog.Show();
 
                                     if (result == TaskDialogResult.CommandLink1)
@@ -134,7 +137,7 @@
                                     !targetFamilyInstance.IsSlantedColumn)
                                 {
                                     var targetColumnRotation = ((LocationPoint)targetFamilyInstance.Location).Rotation;
-                                    
+
                                     foreach (var element in copiedElements)
                                     {
                                         ElementTransformUtils.RotateElement(

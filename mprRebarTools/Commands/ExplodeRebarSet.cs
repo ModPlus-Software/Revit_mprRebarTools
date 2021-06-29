@@ -24,6 +24,9 @@
         {
             return CommandExecutor.Execute(() =>
             {
+#if !DEBUG
+                ModPlusAPI.Statistic.SendCommandStarting($"mpr{nameof(ExplodeRebarSet)}", ModPlusConnector.Instance.AvailProductExternalVersion);
+#endif
                 var doc = commandData.Application.ActiveUIDocument.Document;
 
                 // "Выберите арматурные наборы"
