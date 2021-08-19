@@ -80,7 +80,9 @@
             {
                 ToolTip = description,
                 LargeImage = new BitmapImage(new Uri(
-                    $"pack://application:,,,/mprRebarTools_{ModPlusConnector.Instance.AvailProductExternalVersion};component/Resources/{name}_32x32.png"))
+                    $"pack://application:,,,/mprRebarTools_{ModPlusConnector.Instance.AvailProductExternalVersion};component/Resources/{name}_32x32.png")),
+                Image = new BitmapImage(new Uri(
+                    $"pack://application:,,,/mprRebarTools_{ModPlusConnector.Instance.AvailProductExternalVersion};component/Resources/{name}_16x16.png"))
             };
         }
     }
