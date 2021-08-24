@@ -79,11 +79,23 @@
                 $"mprRebarTools.Commands.{name}")
             {
                 ToolTip = description,
-                LargeImage = new BitmapImage(new Uri(
-                    $"pack://application:,,,/mprRebarTools_{ModPlusConnector.Instance.AvailProductExternalVersion};component/Resources/{name}_32x32.png")),
-                Image = new BitmapImage(new Uri(
-                    $"pack://application:,,,/mprRebarTools_{ModPlusConnector.Instance.AvailProductExternalVersion};component/Resources/{name}_16x16.png"))
+                LargeImage = GetBitmapImage(
+                    $"pack://application:,,,/mprRebarTools_{ModPlusConnector.Instance.AvailProductExternalVersion};component/Resources/{name}_32x32.png"),
+                Image = GetBitmapImage(
+                    $"pack://application:,,,/mprRebarTools_{ModPlusConnector.Instance.AvailProductExternalVersion};component/Resources/{name}_16x16.png")
             };
+        }
+        
+        private static BitmapImage GetBitmapImage(string uri)
+        {
+            // https://stackoverflow.com/a/65111729/4944499
+            // https://stackoverflow.com/a/65111729/4944499
+            var bi = new BitmapImage();
+            bi.BeginInit();
+            bi.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+            bi.UriSource = new Uri(uri, UriKind.RelativeOrAbsolute);
+            bi.EndInit();
+            return bi;
         }
     }
 }

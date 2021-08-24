@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
    <PropertyGroup>
-    <Version>1.0.2.0</Version>
+    <Version>1.0.3.0</Version>
     <RootNamespace>mprRebarTools</RootNamespace>
     <AssemblyName>$(RootNamespace)</AssemblyName>
   </PropertyGroup>
