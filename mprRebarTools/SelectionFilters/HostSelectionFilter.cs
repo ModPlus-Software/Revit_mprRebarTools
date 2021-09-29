@@ -17,7 +17,10 @@
                     elem.Category.Id.IntegerValue == (int)BuiltInCategory.OST_StructuralFoundation ||
                     elem.Category.Id.IntegerValue == (int)BuiltInCategory.OST_StructuralFraming ||
                     elem.Category.Id.IntegerValue == (int)BuiltInCategory.OST_EdgeSlab ||
-                    elem.Category.Id.IntegerValue == (int)BuiltInCategory.OST_Stairs);
+                    elem.Category.Id.IntegerValue == (int)BuiltInCategory.OST_Stairs ||
+                    elem.Category.Id.IntegerValue == (int)BuiltInCategory.OST_Floors ||
+                    elem.Category.Id.IntegerValue == (int)BuiltInCategory.OST_Walls ||
+                    elem.Category.Id.IntegerValue == (int)BuiltInCategory.OST_GenericModel);
         }
 
         /// <inheritdoc />
