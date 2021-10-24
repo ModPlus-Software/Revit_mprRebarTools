@@ -36,7 +36,6 @@
 
                 var sourceColumnRotation = double.NaN;
                 if (sourceHost is FamilyInstance sourceFamilyInstance &&
-                    sourceFamilyInstance.Category.Id.IntegerValue == (int)BuiltInCategory.OST_StructuralColumns &&
                     !sourceFamilyInstance.IsSlantedColumn)
                 {
                     sourceColumnRotation = ((LocationPoint)sourceFamilyInstance.Location).Rotation;
@@ -133,7 +132,6 @@
 
                                 if (!double.IsNaN(sourceColumnRotation) &&
                                     targetHost is FamilyInstance targetFamilyInstance &&
-                                    targetFamilyInstance.Category.Id.IntegerValue == (int)BuiltInCategory.OST_StructuralColumns &&
                                     !targetFamilyInstance.IsSlantedColumn)
                                 {
                                     var targetColumnRotation = ((LocationPoint)targetFamilyInstance.Location).Rotation;
