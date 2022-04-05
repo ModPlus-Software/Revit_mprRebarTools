@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31321.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mprRebarTools", "mprRebarTools\mprRebarTools.csproj", "{D4C6FFCF-119B-4E3D-918D-F6D48E43F892}"
 EndProject
@@ -16,6 +16,7 @@ Global
 		R2020|x64 = R2020|x64
 		R2021|x64 = R2021|x64
 		R2022|x64 = R2022|x64
+		R2023|x64 = R2023|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D4C6FFCF-119B-4E3D-918D-F6D48E43F892}.Debug|x64.ActiveCfg = Debug|x64
@@ -31,6 +32,8 @@ Global
 		{D4C6FFCF-119B-4E3D-918D-F6D48E43F892}.R2021|x64.Build.0 = R2021|x64
 		{D4C6FFCF-119B-4E3D-918D-F6D48E43F892}.R2022|x64.ActiveCfg = R2022|x64
 		{D4C6FFCF-119B-4E3D-918D-F6D48E43F892}.R2022|x64.Build.0 = R2022|x64
+		{D4C6FFCF-119B-4E3D-918D-F6D48E43F892}.R2023|x64.ActiveCfg = R2023|x64
+		{D4C6FFCF-119B-4E3D-918D-F6D48E43F892}.R2023|x64.Build.0 = R2023|x64
 		{BB602819-2B57-4B87-B083-CC9ED45FE5D7}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{BB602819-2B57-4B87-B083-CC9ED45FE5D7}.Debug|x64.Build.0 = Debug|Any CPU
 		{BB602819-2B57-4B87-B083-CC9ED45FE5D7}.R2017|x64.ActiveCfg = Debug|Any CPU
@@ -39,6 +42,8 @@ Global
 		{BB602819-2B57-4B87-B083-CC9ED45FE5D7}.R2020|x64.ActiveCfg = Debug|Any CPU
 		{BB602819-2B57-4B87-B083-CC9ED45FE5D7}.R2021|x64.ActiveCfg = Debug|Any CPU
 		{BB602819-2B57-4B87-B083-CC9ED45FE5D7}.R2022|x64.ActiveCfg = Debug|Any CPU
+		{BB602819-2B57-4B87-B083-CC9ED45FE5D7}.R2023|x64.ActiveCfg = Release|Any CPU
+		{BB602819-2B57-4B87-B083-CC9ED45FE5D7}.R2023|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

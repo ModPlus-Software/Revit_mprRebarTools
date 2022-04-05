@@ -39,13 +39,16 @@ public class ModPlusConnector : IModPlusPlugin
 #elif R2022
     /// <inheritdoc/>
     public string AvailProductExternalVersion => "2022";
+#elif R2023
+    /// <inheritdoc/>
+    public string AvailProductExternalVersion => "2023";
 #endif
 
     /// <inheritdoc/>
     public string FullClassName => string.Empty;
 
     /// <inheritdoc/>
-    public string AppFullClassName => $"{nameof(mprRebarTools)}.App";
+    public string AppFullClassName => $"{nameof(mprRebarTools)}.{nameof(App)}";
 
     /// <inheritdoc/>
     public Guid AddInId => Guid.Parse("45d860ed-19e9-44a9-8367-a1e7cf485cd8");
