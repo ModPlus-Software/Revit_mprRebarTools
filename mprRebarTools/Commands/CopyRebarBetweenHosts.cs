@@ -45,9 +45,27 @@ public class CopyRebarBetweenHosts : IExternalCommand
 
             if (!sourceReinforcement.Any())
                 return;
+
+            var sourceGroupsAndAssemblies = new Dictionary<int, Element>();
+            for (var i = sourceReinforcement.Count - 1; i >= 0; i--)
+            {
+                if (doc.GetElement(sourceReinforcement[i].GroupId ?? ElementId.InvalidElementId) is Group group)
+                {
+                    if (!sourceGroupsAndAssemblies.ContainsKey(group.Id.IntegerValue))
+                        sourceGroupsAndAssemblies.Add(group.Id.IntegerValue, group);
+                    sourceReinforcement.RemoveAt(i);
+                }
+                else if (doc.GetElement(sourceReinforcement[i].AssemblyInstanceId ?? ElementId.InvalidElementId) is AssemblyInstance assemblyInstance)
+                {
+                    if (!sourceGroupsAndAssemblies.ContainsKey(assemblyInstance.Id.IntegerValue))
+                        sourceGroupsAndAssemblies.Add(assemblyInstance.Id.IntegerValue, assemblyInstance);
+                    sourceReinforcement.RemoveAt(i);
+                }
+            }
+
             var sourceSolids = GetSolids(sourceHost).ToList();
             var sourceCentroid = GetCentroid(sourceSolids);
-            
+
             var skipIfNoMatchSolids = false;
             var copyIfNoMatchSolids = false;
             using (var trGroup = new TransactionGroup(doc, Language.GetItem("n2")))
@@ -120,12 +138,26 @@ public class CopyRebarBetweenHosts : IExternalCommand
 
                             var translation = targetCentroid - sourceCentroid;
 
-                            var copiedElements = ElementTransformUtils.CopyElements(
-                                    doc,
-                                    sourceReinforcement.Select(e => e.Id).ToList(),
-                                    translation)
-                                .Select(id => doc.GetElement(id))
-                                .ToList();
+                            var copiedElements = new List<Element>();
+
+                            if (sourceReinforcement.Any())
+                            {
+                                copiedElements.AddRange(ElementTransformUtils.CopyElements(
+                                       doc,
+                                       sourceReinforcement.Select(e => e.Id).ToList(),
+                                       translation)
+                                   .Select(id => doc.GetElement(id)));
+                            }
+
+                            if (sourceGroupsAndAssemblies.Any())
+                            {
+                                copiedElements.AddRange(
+                                    ElementTransformUtils.CopyElements(
+                                        doc,
+                                        sourceGroupsAndAssemblies.Select(p => p.Value.Id).ToList(),
+                                        translation)
+                                        .Select(id => doc.GetElement(id)));
+                            }
 
                             if (!double.IsNaN(sourceColumnRotation) &&
                                 targetHost is FamilyInstance { IsSlantedColumn: false, Location: LocationPoint targetFamilyLocationPoint })

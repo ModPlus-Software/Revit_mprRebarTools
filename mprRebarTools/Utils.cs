@@ -25,25 +25,37 @@
             bool gerRebarContainer = true)
         {
             var rebarHostData = RebarHostData.GetRebarHostData(host);
-            
-            foreach (var areaReinforcement in rebarHostData.GetAreaReinforcementsInHost())
+
+            if (getAreaReinforcement)
             {
-                yield return areaReinforcement;
+                foreach (var areaReinforcement in rebarHostData.GetAreaReinforcementsInHost())
+                {
+                    yield return areaReinforcement;
+                }
             }
-            
-            foreach (var pathReinforcement in rebarHostData.GetPathReinforcementsInHost())
+
+            if (getPathReinforcement)
             {
-                yield return pathReinforcement;
+                foreach (var pathReinforcement in rebarHostData.GetPathReinforcementsInHost())
+                {
+                    yield return pathReinforcement;
+                }
             }
-            
-            foreach (var rebarContainer in rebarHostData.GetRebarContainersInHost())
+
+            if (gerRebarContainer)
             {
-                yield return rebarContainer;
+                foreach (var rebarContainer in rebarHostData.GetRebarContainersInHost())
+                {
+                    yield return rebarContainer;
+                }
             }
-            
-            foreach (var rebar in rebarHostData.GetRebarsInHost())
+
+            if (getRebar)
             {
-                yield return rebar;
+                foreach (var rebar in rebarHostData.GetRebarsInHost())
+                {
+                    yield return rebar;
+                }
             }
         }
     }
