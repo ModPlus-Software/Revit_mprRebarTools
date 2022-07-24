@@ -64,6 +64,7 @@ public class App : IExternalApplication
                      new ("CopyRebarBetweenHosts", Language.GetItem("n2"), Language.GetItem("d2")),
                      new ("ExplodeRebarSet", Language.GetItem("n3"), Language.GetItem("d3")),
                      new ("SplitRebarSet", Language.GetItem("n4"), Language.GetItem("d4")),
+                     new ("SetRebarPresentationMode", Language.GetItem("n5"), Language.GetItem("d5")),
                  })
         {
             sb.AddPushButton(GetButton(t.Item1, t.Item2, t.Item3));

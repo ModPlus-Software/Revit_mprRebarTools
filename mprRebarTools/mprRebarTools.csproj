@@ -138,6 +138,8 @@
 		<Resource Include="Resources\mprRebarTools_32x32.png" />
 		<Resource Include="Resources\RemoveRebarFromHost_16x16.png" />
 		<Resource Include="Resources\RemoveRebarFromHost_32x32.png" />
+		<Resource Include="Resources\SetRebarPresentationMode_16x16.png" />
+		<Resource Include="Resources\SetRebarPresentationMode_32x32.png" />
 		<Resource Include="Resources\SplitRebarSet_16x16.png" />
 		<Resource Include="Resources\SplitRebarSet_32x32.png" />
 	</ItemGroup>

@@ -25,7 +25,7 @@ public class ExplodeRebarSet : IExternalCommand
         return CommandExecutor.Execute(() =>
         {
 #if !DEBUG
-                ModPlusAPI.Statistic.SendCommandStarting($"mpr{nameof(ExplodeRebarSet)}", ModPlusConnector.Instance.AvailProductExternalVersion);
+            ModPlusAPI.Statistic.SendCommandStarting($"mpr{nameof(ExplodeRebarSet)}", ModPlusConnector.Instance.AvailProductExternalVersion);
 #endif
             var doc = commandData.Application.ActiveUIDocument.Document;
 
@@ -58,9 +58,8 @@ public class ExplodeRebarSet : IExternalCommand
         using (var tr = new Transaction(rebar.Document, "Explode rebar set"))
         {
             tr.Start();
-                
 #if R2017
-                var distributionPath = rebar.GetDistributionPath();
+            var distributionPath = rebar.GetDistributionPath();
 #else
             var distributionPath = rebar.GetShapeDrivenAccessor().GetDistributionPath();
 #endif

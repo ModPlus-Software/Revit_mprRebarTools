@@ -1,61 +1,63 @@
-﻿namespace mprRebarTools
+﻿namespace mprRebarTools;
+
+using System.Collections.Generic;
+using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Structure;
+
+/// <summary>
+/// Утилиты
+/// </summary>
+public static class Utils
 {
-    using System.Collections.Generic;
-    using Autodesk.Revit.DB;
-    using Autodesk.Revit.DB.Structure;
-
     /// <summary>
-    /// Утилиты
+    /// Возвращает элементы армирования из элемента-основы
     /// </summary>
-    public static class Utils
+    /// <param name="host">Элемент-основа</param>
+    /// <param name="getRebar">Get <see cref="Rebar"/></param>
+    /// <param name="getAreaReinforcement">Get <see cref="AreaReinforcement"/></param>
+    /// <param name="getPathReinforcement">Get <see cref="PathReinforcement"/></param>
+    /// <param name="gerRebarContainer">Get <see cref="RebarContainer"/></param>
+    public static IEnumerable<Element> GetReinforcement(
+        Element host,
+        bool getRebar = true,
+        bool getAreaReinforcement = true,
+        bool getPathReinforcement = true,
+        bool gerRebarContainer = true)
     {
-        /// <summary>
-        /// Возвращает элементы армирования из элемента-основы
-        /// </summary>
-        /// <param name="host">Элемент-основа</param>
-        /// <param name="getRebar">Get <see cref="Rebar"/></param>
-        /// <param name="getAreaReinforcement">Get <see cref="AreaReinforcement"/></param>
-        /// <param name="getPathReinforcement">Get <see cref="PathReinforcement"/></param>
-        /// <param name="gerRebarContainer">Get <see cref="RebarContainer"/></param>
-        public static IEnumerable<Element> GetReinforcement(
-            Element host,
-            bool getRebar = true,
-            bool getAreaReinforcement = true,
-            bool getPathReinforcement = true,
-            bool gerRebarContainer = true)
+        var rebarHostData = RebarHostData.GetRebarHostData(host);
+
+        if (rebarHostData == null)
+            yield break;
+
+        if (getAreaReinforcement)
         {
-            var rebarHostData = RebarHostData.GetRebarHostData(host);
-
-            if (getAreaReinforcement)
+            foreach (var areaReinforcement in rebarHostData.GetAreaReinforcementsInHost())
             {
-                foreach (var areaReinforcement in rebarHostData.GetAreaReinforcementsInHost())
-                {
-                    yield return areaReinforcement;
-                }
+                yield return areaReinforcement;
             }
+        }
 
-            if (getPathReinforcement)
+        if (getPathReinforcement)
+        {
+            foreach (var pathReinforcement in rebarHostData.GetPathReinforcementsInHost())
             {
-                foreach (var pathReinforcement in rebarHostData.GetPathReinforcementsInHost())
-                {
-                    yield return pathReinforcement;
-                }
+                yield return pathReinforcement;
             }
+        }
 
-            if (gerRebarContainer)
+        if (gerRebarContainer)
+        {
+            foreach (var rebarContainer in rebarHostData.GetRebarContainersInHost())
             {
-                foreach (var rebarContainer in rebarHostData.GetRebarContainersInHost())
-                {
-                    yield return rebarContainer;
-                }
+                yield return rebarContainer;
             }
+        }
 
-            if (getRebar)
+        if (getRebar)
+        {
+            foreach (var rebar in rebarHostData.GetRebarsInHost())
             {
-                foreach (var rebar in rebarHostData.GetRebarsInHost())
-                {
-                    yield return rebar;
-                }
+                yield return rebar;
             }
         }
     }

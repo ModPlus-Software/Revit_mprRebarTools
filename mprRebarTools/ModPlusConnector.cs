@@ -22,20 +22,20 @@ public class ModPlusConnector : IModPlusPlugin
     public string Name => nameof(mprRebarTools);
 
 #if R2017
-        /// <inheritdoc/>
-        public string AvailProductExternalVersion => "2017";
+    /// <inheritdoc/>
+    public string AvailProductExternalVersion => "2017";
 #elif R2018
-        /// <inheritdoc/>
-        public string AvailProductExternalVersion => "2018";
+    /// <inheritdoc/>
+    public string AvailProductExternalVersion => "2018";
 #elif R2019
-        /// <inheritdoc/>
-        public string AvailProductExternalVersion => "2019";
+    /// <inheritdoc/>
+    public string AvailProductExternalVersion => "2019";
 #elif R2020
-        /// <inheritdoc/>
-        public string AvailProductExternalVersion => "2020";
+    /// <inheritdoc/>
+    public string AvailProductExternalVersion => "2020";
 #elif R2021
-        /// <inheritdoc/>
-        public string AvailProductExternalVersion => "2021";
+    /// <inheritdoc/>
+    public string AvailProductExternalVersion => "2021";
 #elif R2022
     /// <inheritdoc/>
     public string AvailProductExternalVersion => "2022";

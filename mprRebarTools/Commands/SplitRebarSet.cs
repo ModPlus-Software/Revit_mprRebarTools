@@ -27,7 +27,7 @@ public class SplitRebarSet : IExternalCommand
         return CommandExecutor.Execute(() =>
         {
 #if !DEBUG
-                ModPlusAPI.Statistic.SendCommandStarting($"mpr{nameof(SplitRebarSet)}", ModPlusConnector.Instance.AvailProductExternalVersion);
+            ModPlusAPI.Statistic.SendCommandStarting($"mpr{nameof(SplitRebarSet)}", ModPlusConnector.Instance.AvailProductExternalVersion);
 #endif
             var doc = commandData.Application.ActiveUIDocument.Document;
 
@@ -55,7 +55,7 @@ public class SplitRebarSet : IExternalCommand
     {
         var maxSpacing = rebar.MaxSpacing;
 #if R2017
-            var distributionPath = rebar.GetDistributionPath();
+        var distributionPath = rebar.GetDistributionPath();
 #else
         var distributionPath = rebar.GetShapeDrivenAccessor().GetDistributionPath();
 #endif
