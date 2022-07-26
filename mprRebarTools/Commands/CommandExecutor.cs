@@ -17,6 +17,7 @@
         {
             try
             {
+                RevitGeometryExporter.ExportGeometryToXml.FolderName = @"E:\Test\mprRebarTools\xml";
                 action.Invoke();
                 return Result.Succeeded;
             }

@@ -1,6 +1,7 @@
 ﻿namespace mprRebarTools.Commands;
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Autodesk.Revit.Attributes;
@@ -51,7 +52,40 @@ public class SplitRebarSet : IExternalCommand
         });
     }
 
-    private void Split(Rebar rebar, XYZ point)
+    /// <summary>
+    /// Разбивает исходный арматурный набор на новые в указанных точках
+    /// </summary>
+    /// <param name="sourceRebar">Исходный арматурный набор</param>
+    /// <param name="points">Точки разбивки. Могут находится вне границ арматурного набор</param>
+    public static List<Rebar> Split(Rebar sourceRebar, List<XYZ> points)
+    {
+        var result = new List<Rebar> { sourceRebar };
+        foreach (var point in points)
+        {
+            foreach (var rebar in result)
+            {
+                var newRebar = Split(rebar, point);
+                if (newRebar != null)
+                {
+                    result.Add(newRebar);
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Разбивает арматурный набор на два в указанной точке
+    /// </summary>
+    /// <remarks>
+    /// Метод изменяет исходный арматурный набор и создает новый
+    /// </remarks>
+    /// <param name="rebar">Исходный арматурный набор</param>
+    /// <param name="point">Точка разбивки</param>
+    /// <returns>Новый созданный арматурный набор. Null - если точка не делит набор</returns>
+    private static Rebar Split(Rebar rebar, XYZ point)
     {
         var maxSpacing = rebar.MaxSpacing;
 #if R2017
@@ -62,16 +96,14 @@ public class SplitRebarSet : IExternalCommand
         var arrayLength = distributionPath.Length;
         var normal = rebar.GetRebarNormal();
         var barsOnNormalSide = Math.Abs(distributionPath.Direction.DotProduct(normal) - 1.0) < 0.0001;
-        var firstCenterlineCurves =
-            rebar.GetCenterlineCurves(false, true, true, MultiplanarOption.IncludeOnlyPlanarCurves, 0);
-        var startPlane =
-            Plane.CreateByNormalAndOrigin(distributionPath.Direction, firstCenterlineCurves.First().GetEndPoint(0));
+        var firstCenterlineCurves = rebar.GetCenterlineCurves(false, true, true, MultiplanarOption.IncludeOnlyPlanarCurves, 0);
+        var startPlane = Plane.CreateByNormalAndOrigin(distributionPath.Direction, firstCenterlineCurves.First().GetEndPoint(0));
         var distance = point.DistanceTo(startPlane.ProjectOnto(point));
         var diameter = ((RebarBarType)rebar.Document.GetElement(rebar.GetTypeId())).GetDiameter(DiameterType.Model);
         var realStep = arrayLength / (rebar.NumberOfBarPositions - 1);
 
 #if !R2017 && !R2018 && !R2019 && !R2020 && !R2021
-        var indexesOfExcludedRebars = new System.Collections.Generic.List<int>();
+        var indexesOfExcludedRebars = new List<int>();
         for (var i = 0; i < rebar.NumberOfBarPositions; i++)
         {
             if (!rebar.DoesBarExistAtPosition(i))
@@ -91,6 +123,8 @@ public class SplitRebarSet : IExternalCommand
         Debug.Print($"Real step: {realStep.FtToMm()}");
         Debug.Print($"Distance for split: {distance.FtToMm()}");
 
+        Rebar newRebar = null;
+
         for (var i = 0; i < rebar.NumberOfBarPositions; i++)
         {
             var lastSelected = i == rebar.NumberOfBarPositions - 1;
@@ -108,8 +142,10 @@ public class SplitRebarSet : IExternalCommand
                         : distributionPath.Direction * realStep * (i + 1);
 
                     if (ElementTransformUtils.CopyElement(rebar.Document, rebar.Id, translation).FirstOrDefault() is { } newRebarId &&
-                        rebar.Document.GetElement(newRebarId) is Rebar newRebar)
+                        rebar.Document.GetElement(newRebarId) is Rebar r)
                     {
+                        newRebar = r;
+
                         if (rebar.LayoutRule == RebarLayoutRule.NumberWithSpacing)
                         {
                             if (lastSelected || i == rebar.NumberOfBarPositions - 2)
@@ -272,9 +308,11 @@ public class SplitRebarSet : IExternalCommand
                 break;
             }
         }
+
+        return newRebar;
     }
 
-    private void SetArrayLength(Rebar rebar, double arrayLength)
+    private static void SetArrayLength(Rebar rebar, double arrayLength)
     {
 #if R2017
         rebar.ArrayLength = arrayLength;

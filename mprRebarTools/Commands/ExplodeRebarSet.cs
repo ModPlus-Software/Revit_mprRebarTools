@@ -74,7 +74,7 @@ public class ExplodeRebarSet : IExternalCommand
                     rebarConstraintsManager.GetCurrentConstraintOnHandle(rebarConstrainedHandle))
                 .ToList();
 
-            for (int i = 0; i < rebar.NumberOfBarPositions; i++)
+            for (var i = 0; i < rebar.NumberOfBarPositions; i++)
             {
                 if (!rebar.IncludeFirstBar && i == 0)
                     continue;

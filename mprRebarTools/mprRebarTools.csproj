@@ -117,6 +117,9 @@
 	<ItemGroup Condition="'$(Configuration)'=='Debug'">
 		<PackageReference Include="ModPlus.Revit.API.2023" Version="3.0.0" ExcludeAssets="runtime" />
 		<PackageReference Include="ModPlus.Revit.Module.2023" Version="11.10.0" ExcludeAssets="runtime" />
+		<Reference Include="RevitGeometryExporter">
+			<HintPath>..\..\..\..\..\..\GitHub\RevitExportGeometryToAutocad\RevitGeometryExporter\bin\Debug\RevitGeometryExporter.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>

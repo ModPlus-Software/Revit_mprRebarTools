@@ -14,10 +14,10 @@
         {
             return elem is Rebar rebar &&
 #if R2017
-                   rebar.LayoutRule != RebarLayoutRule.Single;
+            rebar.LayoutRule != RebarLayoutRule.Single;
 #else
-                   rebar.LayoutRule != RebarLayoutRule.Single &&
-                   rebar.IsRebarShapeDriven();
+            rebar.LayoutRule != RebarLayoutRule.Single &&
+            rebar.IsRebarShapeDriven();
 #endif
         }
 
